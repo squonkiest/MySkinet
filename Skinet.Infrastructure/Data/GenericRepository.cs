@@ -13,6 +13,15 @@ namespace Skinet.Infrastructure.Data
             _storeContext.Set<T>().Add(entity);
         }
 
+        public async Task<int> CountAsync(ISpecification<T> specificaiton)
+        {
+            var query = _storeContext.Set<T>().AsQueryable();
+
+            query = specificaiton.ApplyCriteria(query);
+
+            return await query.CountAsync();
+        }
+
         public bool Exists(int id)
         {
             return _storeContext.Set<T>().Any(x => x.Id == id);
