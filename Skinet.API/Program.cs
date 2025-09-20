@@ -19,6 +19,7 @@ namespace Skinet.API
             });
 
             builder.Services.AddScoped<IProductRepository, ProductRepository>();
+            builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 
             WebApplication app = builder.Build();
 
