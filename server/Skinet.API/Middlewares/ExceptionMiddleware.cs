@@ -6,6 +6,7 @@ namespace Skinet.API.Middlewares
 {
     public class ExceptionMiddleware(IHostEnvironment env, RequestDelegate next)
     {
+        private static readonly JsonSerializerOptions s_options = new() { PropertyNamingPolicy = JsonNamingPolicy.CamelCase };
         public async Task InvokeAsync(HttpContext context)
         {
             try
@@ -27,9 +28,7 @@ namespace Skinet.API.Middlewares
                 ? new ApiErrorResponse(context.Response.StatusCode, ex.Message, ex.StackTrace)
                 : new ApiErrorResponse(context.Response.StatusCode, ex.Message, "Internal Server Error");
 
-            var options = new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase };
-
-            var json = JsonSerializer.Serialize(response, options);
+            var json = JsonSerializer.Serialize(response, s_options);
 
             return context.Response.WriteAsync(json);
         }
