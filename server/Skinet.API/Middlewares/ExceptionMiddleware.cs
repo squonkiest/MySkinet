@@ -20,6 +20,7 @@ namespace Skinet.API.Middlewares
 
         private static Task HandleExceptionAsync(HttpContext context, Exception ex, IHostEnvironment env)
         {
+            //test build
             context.Response.ContentType = "application/json";
             context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
 
