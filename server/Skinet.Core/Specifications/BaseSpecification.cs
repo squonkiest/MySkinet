@@ -25,7 +25,7 @@ namespace Skinet.Core.Specifications
         {
             if (Criteria != null)
             {
-                query = query.Where(criteria);
+                query = query.Where(Criteria);
             }
 
             return query;
