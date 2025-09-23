@@ -21,7 +21,12 @@ namespace Skinet.API.Controllers
         [HttpGet("{id:int}")]
         public async Task<ActionResult<Product>> GetProduct(int id)
         {
-            return Ok(await _productRepository.GetByIdAsync(id));
+            Product? product = await _productRepository.GetByIdAsync(id);
+            if (product == null)
+            {
+                return NotFound();
+            }
+            return Ok(product);
         }
 
         [HttpGet("brands")]
