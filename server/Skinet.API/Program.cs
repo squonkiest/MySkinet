@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Skinet.API.Middlewares;
+using Skinet.Core.Entities;
 using Skinet.Core.Interfaces;
 using Skinet.Infrastructure.Data;
 using Skinet.Infrastructure.Services;
@@ -32,14 +33,19 @@ namespace Skinet.API
                 return ConnectionMultiplexer.Connect(configuration);
             });
             builder.Services.AddSingleton<ICartService, CartService>();
+            builder.Services.AddAuthorization();
+            builder.Services.AddIdentityApiEndpoints<AppUser>()
+                .AddEntityFrameworkStores<StoreContext>();
+
 
             WebApplication app = builder.Build();
 
             // Configure the HTTP request pipeline.
             app.UseMiddleware<ExceptionMiddleware>();
-            app.UseCors(opt => opt.AllowAnyHeader().AllowAnyMethod()
+            app.UseCors(opt => opt.AllowAnyHeader().AllowAnyMethod().AllowCredentials()
                         .WithOrigins("https://localhost:4200", "http://localhost:4200"));
             app.MapControllers();
+            app.MapGroup("api").MapIdentityApi<AppUser>();
 
             try
             {

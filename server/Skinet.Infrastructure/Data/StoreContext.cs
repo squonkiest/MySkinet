@@ -1,10 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Skinet.Core.Entities;
 using Skinet.Infrastructure.Config;
 
 namespace Skinet.Infrastructure.Data
 {
-    public class StoreContext(DbContextOptions options) : DbContext(options)
+    public class StoreContext(DbContextOptions options) : IdentityDbContext<AppUser>(options)
     {
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -15,5 +16,7 @@ namespace Skinet.Infrastructure.Data
         }
 
         public required DbSet<Product> Products { get; set; }
+        public required DbSet<Product> Addresses { get; set; }
+
     }
 }
